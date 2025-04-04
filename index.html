@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">انضم إلى نادي برشلونة</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+        /* تعيين الصورة كخلفية كاملة للموقع */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-image: url('https://img.btolat.com/2025/1/23/news/362629/large.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: black; /* تغيير اللون إلى الأسود */
+            margin: 0;
+            padding: 0;
+            height: 100%; /* تعيين ارتفاع الصفحة ليغطي كامل الشاشة */
+            overflow-y: scroll; /* السماح بالتمرير العمودي */
+        }
+        header {
+            background-color: rgba(0, 51, 160, 0.8);
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 2px solid #fcb040;
+            position: relative;
+        }
+        header img {
+            width: 120px;
+            display: block;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 36px;
+            margin-top: 10px;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+            color: black; /* تغيير لون النص إلى الأسود */
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select {
+            background-color: rgba(255, 165, 0, 0.3); /* خلفية شفافة مع لون برتقالي */
+            color: black; /* تغيير لون النص إلى الأسود */
+        }
+        button {
+            background-color: #fcb040;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #e68920;
+        }
+        .footer {
+            text-align: center;
+            background-color: #0033a0;
+            color: white;
+            padding: 15px;
+            margin-top: 40px;
+        }
+        .confirmation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            color: #0033a0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+        .confirmation h2 {
+            text-align: center;
+        }
+        .confirmation p {
+            font-size: 18px;
+        }
+        .confirmation .request-number {
+            font-weight: bold;
+            color: #fcb040;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .qr-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .qr-container img {
+            width: 150px;
+            height: 150px;
+        }
+
+        /* تناسق الموقع مع الهواتف والأجهزة اللوحية */
+        @media screen and (max-width: 768px) {
+            .two-columns {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .two-columns .form-group {
+                width: 100%;
+            }
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            header {
+                padding: 10px 0;
+            }
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        /* إضافة الشريط السفلي مع تصغير الحجم */
+        .footer-bar {
+            background-color: #0033a0;
+            color: white;
+            font-size: 7px; /* تقليل حجم النص */
+            padding: 5px 0; /* تقليل المسافة بين النصوص */
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+        }
+
+        /* نافذة الشفافة التي تظهر عند إرسال الطلب */
+        .success-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 51, 160, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            text-align: center;
+            display: none;
+            z-index: 10000;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <img src="https://www.fcbarcelona.com/photo-resources/2024/09/12/ca3eec96-5e67-4079-b8bd-982150fb27b3/1600x700_CAMPANYA-SOCIS_ENG.jpg?width=1600&height=700" alt="شعار نادي برشلونة">
+        <h1 id="headerTitle">انضم إلى نادي برشلونة</h1>
+    </header>
+
+    <!-- Main Content Section (نموذج التسجيل) -->
+    <div class="container" id="formContainer">
+        <h2 id="formTitle">استمارة التسجيل كعضو في النادي</h2>
+        <p id="formDescription">املأ البيانات التالية للانضمام إلى عائلة نادي برشلونة.</p>
+        
+        <form id="registrationForm">
+            <div class="two-columns">
+                <div class="form-group">
+                    <label for="fullName" id="fullNameLabel">الاسم الكامل</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="الاسم الكامل">
+                </div>
+                <div class="form-group">
+                    <label for="email" id="emailLabel">البريد الإلكتروني</label>
+                    <input type="email" id="email" name="email" placeholder="البريد الإلكتروني">
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div class="form-group">
+                    <label for="phone" id="phoneLabel">رقم الهاتف</label>
+                    <input type="tel" id="phone" name="phone" placeholder="رقم الهاتف">
+                </div>
+                <div class="form-group">
+                    <label for="dob" id="dobLabel">تاريخ الميلاد</label>
+                    <input type="date" id="dob" name="dob">
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div class="form-group">
+                    <label for="address" id="addressLabel">العنوان الكامل</label>
+                    <input type="text" id="address" name="address" placeholder="العنوان الكامل">
+                </div>
+                <div class="form-group">
+                    <label for="idNumber" id="idNumberLabel">رقم الجواز أو الهوية الوطنية</label>
+                    <input type="text" id="idNumber" name="idNumber" placeholder="رقم الجواز أو الهوية الوطنية">
+                </div>
+            </div>
+
+            <button type="button" id="submitButton" onclick="submitForm()">تقديم الطلب</button>
+        </form>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader"></div>
+
+    <!-- صفحة التأكيد -->
+    <div class="confirmation" id="confirmationSection" style="display:none;">
+        <h2>تم تقديم الطلب بنجاح</h2>
+        <p>رقم الطلب: <span class="request-number" id="requestNumber">BR-215123</span></p>
+        <p><strong>البيانات المدخلة:</strong></p>
+        <ul id="submittedData"></ul>
+
+        <div class="qr-container" id="qrContainer">
+            <h3>QR Code</h3>
+            <div id="qrCode"></div>
+        </div>
+    </div>
+
+    <!-- نافذة التأكيد -->
+    <div class="success-window" id="successWindow">
+        تم تقديم الطلب بنجاح
+    </div>
+
+    <!-- Footer Bar -->
+    <div class="footer-bar">
+        <p>عضوية نادي برشلونة جميع الحقوق محفوظة</p>
+    </div>
+
+    <script>
+        var requestNumber = 215123;
+
+        // التحقق من اكتمال الحقول قبل ارسال الطلب
+        function validateForm() {
+            var fullName = document.getElementById("fullName").value;
+            var email = document.getElementById("email").value;
+            var phone = document.getElementById("phone").value;
+            var dob = document.getElementById("dob").value;
+            var address = document.getElementById("address").value;
+            var idNumber = document.getElementById("idNumber").value;
+
+            if (!fullName || !email || !phone || !dob || !address || !idNumber) {
+                alert("الرجاء ملء جميع الحقول المطلوبة.");
+                return false;
+            }
+            return true;
+        }
+
+        // وظيفة ارسال الطلب
+        function submitForm() {
+            if (validateForm()) {
+                document.getElementById("loader").style.display = "block";
+                
+                setTimeout(function() {
+                    // إخفاء النموذج واظهار صفحة التأكيد
+                    document.getElementById("formContainer").style.display = "none";
+                    document.getElementById("confirmationSection").style.display = "block";
+                    document.getElementById("loader").style.display = "none";
+
+                    // تحديث رقم الطلب وبياناته
+                    document.getElementById("requestNumber").innerText = "BR-" + requestNumber;
+                    var fullName = document.getElementById("fullName").value;
+                    var email = document.getElementById("email").value;
+                    var phone = document.getElementById("phone").value;
+                    var dob = document.getElementById("dob").value;
+                    var address = document.getElementById("address").value;
+                    var idNumber = document.getElementById("idNumber").value;
+
+                    var submittedData = document.getElementById("submittedData");
+                    submittedData.innerHTML = `
+                        <li>الاسم الكامل: ${fullName}</li>
+                        <li>البريد الإلكتروني: ${email}</li>
+                        <li>رقم الهاتف: ${phone}</li>
+                        <li>تاريخ الميلاد: ${dob}</li>
+                        <li>العنوان: ${address}</li>
+                        <li>رقم الهوية: ${idNumber}</li>
+                    `;
+                    
+                    // توليد QR code مع بيانات المدخلات
+                    var dataToEncode = `الاسم الكامل: ${fullName}\nالبريد الإلكتروني: ${email}\nرقم الهاتف: ${phone}\nتاريخ الميلاد: ${dob}\nالعنوان: ${address}\nرقم الهوية: ${idNumber}`;
+                    var qrContainer = document.getElementById("qrCode");
+                    QRCode.toDataURL(dataToEncode, function (err, url) {
+                        var img = document.createElement('img');
+                        img.src = url;
+                        qrContainer.appendChild(img);
+                    });
+
+                    requestNumber++;
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
