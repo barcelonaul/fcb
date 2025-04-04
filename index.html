@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title id="pageTitle">انضم إلى نادي برشلونة</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
@@ -128,8 +128,6 @@
             width: 150px;
             height: 150px;
         }
-
-        /* تناسق الموقع مع الهواتف والأجهزة اللوحية */
         @media screen and (max-width: 768px) {
             .two-columns {
                 flex-direction: column;
@@ -148,22 +146,25 @@
             h1 {
                 font-size: 28px;
             }
+            label {
+                font-size: 14px;
+            }
+            input, select, button {
+                font-size: 14px;
+                padding: 8px;
+            }
         }
-
-        /* إضافة الشريط السفلي مع تصغير الحجم */
         .footer-bar {
             background-color: #0033a0;
             color: white;
-            font-size: 7px; /* تقليل حجم النص */
-            padding: 5px 0; /* تقليل المسافة بين النصوص */
+            font-size: 7px;
+            padding: 5px 0;
             text-align: center;
             position: fixed;
             width: 100%;
             bottom: 0;
             left: 0;
         }
-
-        /* نافذة الشفافة التي تظهر عند إرسال الطلب */
         .success-window {
             position: fixed;
             top: 50%;
@@ -179,21 +180,18 @@
             display: none;
             z-index: 10000;
         }
-
     </style>
 </head>
 <body>
-    <!-- Header Section -->
     <header>
         <img src="https://www.fcbarcelona.com/photo-resources/2024/09/12/ca3eec96-5e67-4079-b8bd-982150fb27b3/1600x700_CAMPANYA-SOCIS_ENG.jpg?width=1600&height=700" alt="شعار نادي برشلونة">
         <h1 id="headerTitle">انضم إلى نادي برشلونة</h1>
     </header>
 
-    <!-- Main Content Section (نموذج التسجيل) -->
     <div class="container" id="formContainer">
         <h2 id="formTitle">استمارة التسجيل كعضو في النادي</h2>
         <p id="formDescription">املأ البيانات التالية للانضمام إلى عائلة نادي برشلونة.</p>
-        
+
         <form id="registrationForm">
             <div class="two-columns">
                 <div class="form-group">
@@ -232,10 +230,8 @@
         </form>
     </div>
 
-    <!-- Loader -->
     <div class="loader" id="loader"></div>
 
-    <!-- صفحة التأكيد -->
     <div class="confirmation" id="confirmationSection" style="display:none;">
         <h2>تم تقديم الطلب بنجاح</h2>
         <p>رقم الطلب: <span class="request-number" id="requestNumber">BR-215123</span></p>
@@ -248,20 +244,23 @@
         </div>
     </div>
 
-    <!-- نافذة التأكيد -->
     <div class="success-window" id="successWindow">
         تم تقديم الطلب بنجاح
     </div>
 
-    <!-- Footer Bar -->
     <div class="footer-bar">
         <p>عضوية نادي برشلونة جميع الحقوق محفوظة</p>
     </div>
 
     <script>
-        var requestNumber = 215123;
+        // دالة لتوليد رقم عشوائي بين min و max
+        function generateRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
-        // التحقق من اكتمال الحقول قبل ارسال الطلب
+        // استخدام الدالة لتوليد رقم عشوائي لرقم الطلب
+        var requestNumber = generateRandomNumber(1000, 9999999);
+
         function validateForm() {
             var fullName = document.getElementById("fullName").value;
             var email = document.getElementById("email").value;
@@ -277,18 +276,16 @@
             return true;
         }
 
-        // وظيفة ارسال الطلب
         function submitForm() {
             if (validateForm()) {
                 document.getElementById("loader").style.display = "block";
                 
                 setTimeout(function() {
-                    // إخفاء النموذج واظهار صفحة التأكيد
                     document.getElementById("formContainer").style.display = "none";
                     document.getElementById("confirmationSection").style.display = "block";
                     document.getElementById("loader").style.display = "none";
 
-                    // تحديث رقم الطلب وبياناته
+                    // تحديث رقم الطلب
                     document.getElementById("requestNumber").innerText = "BR-" + requestNumber;
                     var fullName = document.getElementById("fullName").value;
                     var email = document.getElementById("email").value;
@@ -306,8 +303,7 @@
                         <li>العنوان: ${address}</li>
                         <li>رقم الهوية: ${idNumber}</li>
                     `;
-                    
-                    // توليد QR code مع بيانات المدخلات
+
                     var dataToEncode = `الاسم الكامل: ${fullName}\nالبريد الإلكتروني: ${email}\nرقم الهاتف: ${phone}\nتاريخ الميلاد: ${dob}\nالعنوان: ${address}\nرقم الهوية: ${idNumber}`;
                     var qrContainer = document.getElementById("qrCode");
                     QRCode.toDataURL(dataToEncode, function (err, url) {
